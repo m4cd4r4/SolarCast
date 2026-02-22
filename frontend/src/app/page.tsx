@@ -14,7 +14,35 @@ import { HistoricalComparison } from "@/components/historical-comparison";
 import { SystemHealth } from "@/components/system-health";
 import { EmailDigest } from "@/components/email-digest";
 import { OnboardingOverlay } from "@/components/onboarding-overlay";
-import Image from "next/image";
+function SolarCastLogo() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+      <rect width="32" height="32" rx="8" fill="#1a1f35" />
+      {/* Sun body */}
+      <circle cx="12" cy="13" r="5.5" fill="url(#sun-grad)" />
+      {/* Sun rays */}
+      <rect x="11" y="4" width="2" height="3" rx="1" fill="#f59e0b" />
+      <rect x="5" y="7.5" width="2" height="3" rx="1" fill="#f59e0b" transform="rotate(-45 6 9)" />
+      <rect x="3" y="12" width="3" height="2" rx="1" fill="#f59e0b" />
+      <rect x="5.5" y="17" width="2" height="3" rx="1" fill="#f59e0b" transform="rotate(45 6.5 18.5)" />
+      {/* Bar chart (ascending) */}
+      <rect x="14" y="20" width="3" height="6" rx="0.5" fill="url(#bar-grad)" />
+      <rect x="18" y="16" width="3" height="10" rx="0.5" fill="url(#bar-grad)" />
+      <rect x="22" y="12" width="3" height="14" rx="0.5" fill="url(#bar-grad)" />
+      <rect x="26" y="8" width="3" height="18" rx="0.5" fill="url(#bar-grad)" />
+      <defs>
+        <linearGradient id="sun-grad" x1="12" y1="7" x2="12" y2="19" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#fbbf24" />
+          <stop offset="1" stopColor="#f97316" />
+        </linearGradient>
+        <linearGradient id="bar-grad" x1="20" y1="8" x2="20" y2="26" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#fbbf24" />
+          <stop offset="1" stopColor="#ea580c" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
 
 const DEFAULT_SYSTEM: SystemSetup = {
   latitude: -31.95,
@@ -84,13 +112,7 @@ export default function Home() {
       <header className="border-b border-white/5">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Image
-              src="/logo.png"
-              alt="SolarCast"
-              width={32}
-              height={32}
-              className="rounded-lg"
-            />
+            <SolarCastLogo />
             <div>
               <h1 className="text-lg font-bold text-white tracking-tight">SolarCast</h1>
               <p className="text-[10px] text-slate-500 -mt-0.5">Solar Intelligence for Australia</p>
