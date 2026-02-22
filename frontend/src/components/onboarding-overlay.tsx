@@ -157,7 +157,7 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
           </div>
 
           {/* Content — fixed height so navigation doesn't shift between steps */}
-          <div className="h-[260px] overflow-y-auto">{current.content}</div>
+          <div className="h-[320px] overflow-y-auto">{current.content}</div>
 
           {/* Navigation */}
           <div className="flex items-center justify-between pt-2">

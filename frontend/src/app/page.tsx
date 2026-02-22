@@ -10,6 +10,7 @@ import { DailyCards } from "@/components/daily-cards";
 import { SmartSchedule } from "@/components/smart-schedule";
 import { CostSavings } from "@/components/cost-savings";
 import { OnboardingOverlay } from "@/components/onboarding-overlay";
+import Image from "next/image";
 
 const DEFAULT_SYSTEM: SystemSetup = {
   latitude: -31.95,
@@ -79,9 +80,13 @@ export default function Home() {
       <header className="border-b border-white/5">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm">
-              S
-            </div>
+            <Image
+              src="/logo.png"
+              alt="SolarCast"
+              width={32}
+              height={32}
+              className="rounded-lg"
+            />
             <div>
               <h1 className="text-lg font-bold text-white tracking-tight">SolarCast</h1>
               <p className="text-[10px] text-slate-500 -mt-0.5">Solar Intelligence for Australia</p>

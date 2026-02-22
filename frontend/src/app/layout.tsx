@@ -13,10 +13,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://frontend-black-five-12.vercel.app"),
   title: "SolarCast - Solar Intelligence for Australia",
   description:
     "Free solar production forecasting for Australian homeowners. See how much your panels will produce today, tomorrow, and next week.",
   keywords: ["solar", "forecast", "Australia", "renewable energy", "PV", "solar panels"],
+  icons: {
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  openGraph: {
+    title: "SolarCast - Solar Intelligence for Australia",
+    description: "Free 7-day solar production forecasting for Australian homeowners.",
+    images: [{ url: "/og-image.png", width: 1200, height: 1200 }],
+    type: "website",
+  },
 };
 
 export default function RootLayout({
