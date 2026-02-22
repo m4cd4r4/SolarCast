@@ -10,9 +10,6 @@ import { DailyCards } from "@/components/daily-cards";
 import { SmartSchedule } from "@/components/smart-schedule";
 import { CostSavings } from "@/components/cost-savings";
 import { PriceOverlay } from "@/components/price-overlay";
-import { HistoricalComparison } from "@/components/historical-comparison";
-import { SystemHealth } from "@/components/system-health";
-import { EmailDigest } from "@/components/email-digest";
 import { OnboardingOverlay } from "@/components/onboarding-overlay";
 function SolarCastLogo() {
   return (
@@ -202,13 +199,6 @@ export default function Home() {
 
             {/* Row 2: Daily forecast cards (full width) */}
             <DailyCards daily={forecast.daily} />
-
-            {/* Row 3: Historical + System Health + Email */}
-            <div className="grid md:grid-cols-3 gap-6">
-              <HistoricalComparison forecast={forecast} />
-              <SystemHealth forecast={forecast} />
-              <EmailDigest />
-            </div>
 
             {/* Footer with data attribution */}
             <div className="text-center py-6 space-y-1">
