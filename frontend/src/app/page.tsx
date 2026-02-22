@@ -9,6 +9,10 @@ import { ForecastSummary } from "@/components/forecast-summary";
 import { DailyCards } from "@/components/daily-cards";
 import { SmartSchedule } from "@/components/smart-schedule";
 import { CostSavings } from "@/components/cost-savings";
+import { PriceOverlay } from "@/components/price-overlay";
+import { HistoricalComparison } from "@/components/historical-comparison";
+import { SystemHealth } from "@/components/system-health";
+import { EmailDigest } from "@/components/email-digest";
 import { OnboardingOverlay } from "@/components/onboarding-overlay";
 import Image from "next/image";
 
@@ -156,20 +160,32 @@ export default function Home() {
           <>
             <ForecastSummary forecast={forecast} />
 
-            {/* Cost savings + Daily forecast */}
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="md:col-span-1">
-                <CostSavings
-                  forecast={forecast}
+            {/* Row 1: Cost savings + Price overlay */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <CostSavings
+                forecast={forecast}
+                tariff={tariff}
+                onTariffChange={setTariff}
+                feedInRate={feedInRate}
+                onFeedInChange={setFeedInRate}
+              />
+              {forecast.daily[0] && (
+                <PriceOverlay
+                  today={forecast.daily[0]}
                   tariff={tariff}
-                  onTariffChange={setTariff}
                   feedInRate={feedInRate}
-                  onFeedInChange={setFeedInRate}
                 />
-              </div>
-              <div className="md:col-span-2">
-                <DailyCards daily={forecast.daily} />
-              </div>
+              )}
+            </div>
+
+            {/* Row 2: Daily forecast cards (full width) */}
+            <DailyCards daily={forecast.daily} />
+
+            {/* Row 3: Historical + System Health + Email */}
+            <div className="grid md:grid-cols-3 gap-6">
+              <HistoricalComparison forecast={forecast} />
+              <SystemHealth forecast={forecast} />
+              <EmailDigest />
             </div>
 
             {/* Footer with data attribution */}
@@ -177,6 +193,9 @@ export default function Home() {
               <p className="text-xs text-slate-600">
                 Weather data from Open-Meteo.com &middot; Historical data from NASA POWER &middot;
                 System estimates from EU PVGIS
+              </p>
+              <p className="text-xs text-slate-600">
+                Wholesale price patterns based on typical NEM profiles. Actual spot prices vary by region and time.
               </p>
               <p className="text-xs text-slate-600">
                 Production estimates use a simplified model. Actual output varies with shading,
