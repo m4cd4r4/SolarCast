@@ -16,72 +16,86 @@ export function DailyCards({ daily }: DailyCardsProps) {
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-white">7-Day Forecast</h2>
 
-      <div className="grid gap-3">
+      {/* Compact single-row cards */}
+      <div className="grid grid-cols-7 gap-2">
         {daily.map((day) => {
           const isSelected = selectedDay === day.date;
-          const barWidth = maxKwh > 0 ? (day.total_kwh / maxKwh) * 100 : 0;
+          const barHeight = maxKwh > 0 ? (day.total_kwh / maxKwh) * 100 : 0;
           const isToday = day.date === new Date().toISOString().slice(0, 10);
 
           return (
-            <div key={day.date}>
-              <button
-                onClick={() => setSelectedDay(isSelected ? null : day.date)}
-                className={`w-full glass-card p-4 text-left transition-all cursor-pointer ${
-                  isSelected ? "solar-glow border-amber-500/30" : "glass-card-hover"
-                } ${isToday ? "ring-1 ring-amber-500/20" : ""}`}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-3">
-                    <div className="text-center min-w-[48px]">
-                      <p className="text-xs text-slate-500">{formatWeekday(day.date)}</p>
-                      <p className="text-sm font-medium text-white">{formatDayMonth(day.date)}</p>
-                      {isToday && (
-                        <span className="text-[10px] text-amber-400 font-medium">TODAY</span>
-                      )}
-                    </div>
-                    <WeatherIcon cloudPct={day.avg_cloud_cover_pct} />
-                    <div>
-                      <p className="text-sm text-white font-medium">
-                        {day.total_kwh.toFixed(1)} kWh
-                      </p>
-                      <p className="text-xs text-slate-400">
-                        {day.sunshine_hours}h sun &middot; {day.avg_cloud_cover_pct.toFixed(0)}%
-                        cloud
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-slate-500">Peak</p>
-                    <p className="text-sm text-amber-400 font-mono">
-                      {day.peak_kw.toFixed(2)} kW
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      {formatTime(day.peak_hour)}
-                    </p>
-                  </div>
-                </div>
+            <button
+              key={day.date}
+              onClick={() => setSelectedDay(isSelected ? null : day.date)}
+              className={`glass-card p-3 text-center transition-all cursor-pointer flex flex-col items-center gap-1.5 ${
+                isSelected ? "solar-glow border-amber-500/30" : "glass-card-hover"
+              } ${isToday ? "ring-1 ring-amber-500/20" : ""}`}
+            >
+              {/* Day label */}
+              <p className={`text-[10px] uppercase tracking-wider ${isToday ? "text-amber-400 font-bold" : "text-slate-500"}`}>
+                {isToday ? "Today" : formatWeekday(day.date)}
+              </p>
 
-                {/* Production bar */}
-                <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                  <div
-                    className="production-bar h-full"
-                    style={{ width: `${barWidth}%` }}
-                  />
-                </div>
+              {/* Date */}
+              <p className="text-xs text-slate-400">{formatDayMonth(day.date)}</p>
 
-                <p className="text-xs text-slate-400 mt-2 italic">{day.description}</p>
-              </button>
+              {/* Weather icon */}
+              <WeatherIcon cloudPct={day.avg_cloud_cover_pct} />
 
-              {/* Expanded hourly view */}
-              {isSelected && (
-                <div className="mt-2 glass-card p-4 animate-[fadeIn_0.2s_ease-out]">
-                  <HourlyChart hourly={day.hourly} systemKw={day.peak_kw} />
-                </div>
-              )}
-            </div>
+              {/* kWh — main metric */}
+              <p className="text-lg font-bold text-amber-400">
+                {day.total_kwh.toFixed(1)}
+              </p>
+              <p className="text-[10px] text-slate-500 -mt-1">kWh</p>
+
+              {/* Mini production bar (vertical) */}
+              <div className="w-5 h-10 bg-white/5 rounded-full overflow-hidden flex flex-col justify-end">
+                <div
+                  className="production-bar w-full rounded-full"
+                  style={{ height: `${barHeight}%` }}
+                />
+              </div>
+
+              {/* Sun hours + cloud */}
+              <p className="text-[10px] text-slate-500">
+                {day.sunshine_hours}h&nbsp;sun
+              </p>
+              <p className="text-[10px] text-slate-500">
+                {day.avg_cloud_cover_pct.toFixed(0)}%&nbsp;cloud
+              </p>
+            </button>
           );
         })}
       </div>
+
+      {/* Expanded hourly view below the row */}
+      {selectedDay && (() => {
+        const day = daily.find((d) => d.date === selectedDay);
+        if (!day) return null;
+        return (
+          <div className="glass-card p-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-sm font-medium text-white">
+                  {new Date(day.date + "T00:00:00").toLocaleDateString("en-AU", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                  })}
+                </p>
+                <p className="text-xs text-slate-400 italic">{day.description}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-bold text-amber-400">{day.total_kwh.toFixed(1)} kWh</p>
+                <p className="text-xs text-slate-500">
+                  Peak {day.peak_kw.toFixed(2)} kW at {formatTime(day.peak_hour)}
+                </p>
+              </div>
+            </div>
+            <HourlyChart hourly={day.hourly} systemKw={day.peak_kw} />
+          </div>
+        );
+      })()}
     </div>
   );
 }
@@ -104,7 +118,7 @@ function WeatherIcon({ cloudPct }: { cloudPct: number }) {
     color = "text-slate-500";
   }
 
-  return <span className={`text-2xl ${color}`}>{icon}</span>;
+  return <span className={`text-xl ${color}`}>{icon}</span>;
 }
 
 function formatWeekday(dateStr: string): string {

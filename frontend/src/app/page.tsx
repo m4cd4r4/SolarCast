@@ -71,6 +71,12 @@ export default function Home() {
     setOnboardingChecked(true);
   }, []);
 
+  // Auto-fetch forecast on first load so the page isn't empty
+  useEffect(() => {
+    handleForecast();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function handleDismissOnboarding() {
     setShowOnboarding(false);
     localStorage.setItem("solarcast_onboarding_seen", "true");
@@ -149,20 +155,27 @@ export default function Home() {
             <SmartSchedule today={forecast.daily[0]} systemKw={system.peak_power_kw} />
           ) : (
             <div className="glass-card p-6 flex items-center justify-center">
-              <div className="text-center space-y-3">
-                <div className="text-4xl">{"\u2600\uFE0F"}</div>
-                <p className="text-slate-400 text-sm max-w-xs">
-                  Select your location and system size, then hit{" "}
-                  <span className="text-amber-400">Get Solar Forecast</span> to see your
-                  personalized production prediction.
-                </p>
-                <button
-                  onClick={handleShowHelp}
-                  className="text-xs text-slate-500 hover:text-amber-400 transition-colors underline underline-offset-2"
-                >
-                  New here? Take the tour
-                </button>
-              </div>
+              {loading ? (
+                <div className="text-center space-y-3">
+                  <div className="text-4xl animate-pulse">{"\u2600\uFE0F"}</div>
+                  <p className="text-slate-400 text-sm">Loading forecast...</p>
+                </div>
+              ) : (
+                <div className="text-center space-y-3">
+                  <div className="text-4xl">{"\u2600\uFE0F"}</div>
+                  <p className="text-slate-400 text-sm max-w-xs">
+                    Select your location and system size, then hit{" "}
+                    <span className="text-amber-400">Get Solar Forecast</span> to see your
+                    personalized production prediction.
+                  </p>
+                  <button
+                    onClick={handleShowHelp}
+                    className="text-xs text-slate-500 hover:text-amber-400 transition-colors underline underline-offset-2"
+                  >
+                    New here? Take the tour
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
