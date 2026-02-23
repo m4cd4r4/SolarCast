@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SolarCast ☀️
 
-## Getting Started
+> Solar production forecasting for Australian homeowners
 
-First, run the development server:
+**Live:** https://frontend-black-five-12.vercel.app
+
+---
+
+## What it does
+
+SolarCast gives Australian solar owners a 7-day production forecast personalised to their system and location. Enter your city and system size, hit **Get Solar Forecast**, and instantly see:
+
+- **7-day production forecast** — daily kWh, sun hours, cloud cover, peak output
+- **Smart schedule** — best windows to run appliances based on today's solar curve
+- **Cost savings** — estimated savings vs grid at your tariff rate
+- **Price-Smart Export** — NEM wholesale price patterns to maximise feed-in revenue
+- **NASA comparison** — how today's forecast compares to 20-year climate averages
+
+Data sources: [Open-Meteo](https://open-meteo.com) · [NASA POWER](https://power.larc.nasa.gov) · [EU PVGIS](https://re.jrc.ec.europa.eu/pvg_tools)
+
+---
+
+## Stack
+
+| Layer | Tech |
+|-------|------|
+| Frontend | Next.js 16 + TypeScript |
+| Styling | Tailwind CSS (glassmorphism theme) |
+| Backend | FastAPI (Python) |
+| Deployment | Vercel (frontend) |
+
+---
+
+## Local development
 
 ```bash
+# Frontend
+cd frontend
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
+
+# Backend
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+# → http://localhost:8000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Cities supported
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Perth · Sydney · Melbourne · Brisbane · Adelaide · Hobart · Darwin · Canberra
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Auto-loads Perth forecast on first visit — no empty state
+- Persists your system config across sessions (localStorage)
+- Onboarding tour for new users
+- PWA-ready (manifest + icons)
+- Responsive down to mobile
